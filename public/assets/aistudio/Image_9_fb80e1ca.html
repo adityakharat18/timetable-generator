@@ -1,0 +1,702 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><title>EvoSchedule — Genetic Algorithm Timetable Optimizer</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-dim":"#cbdbf5","on-tertiary-fixed":"#07006c","surface-container-high":"#dce9ff","on-secondary-fixed":"#131b2e","on-primary-container":"#dad7ff","primary":"#3525cd","surface-bright":"#f8f9ff","outline":"#777587","tertiary-fixed-dim":"#c0c1ff","outline-variant":"#c7c4d8","inverse-surface":"#213145","surface-container-low":"#eff4ff","surface-container-lowest":"#ffffff","on-error":"#ffffff","on-surface":"#0b1c30","primary-container":"#4f46e5","on-error-container":"#93000a","secondary":"#565e74","secondary-container":"#dae2fd","tertiary":"#3130c0","surface-container":"#e5eeff","on-surface-variant":"#464555","on-secondary":"#ffffff","on-secondary-container":"#5c647a","error-container":"#ffdad6","surface":"#f8f9ff","inverse-primary":"#c3c0ff","surface-container-highest":"#d3e4fe","on-tertiary-fixed-variant":"#2f2ebe","tertiary-container":"#4b4dd8","primary-fixed":"#e2dfff","primary-fixed-dim":"#c3c0ff","on-primary-fixed":"#0f0069","on-background":"#0b1c30","on-tertiary-container":"#d9d8ff","on-tertiary":"#ffffff","on-primary-fixed-variant":"#3323cc","background":"#f8f9ff","error":"#ba1a1a","surface-tint":"#4d44e3","tertiary-fixed":"#e1e0ff","secondary-fixed":"#dae2fd","surface-variant":"#d3e4fe","inverse-on-surface":"#eaf1ff","on-secondary-fixed-variant":"#3f465c","secondary-fixed-dim":"#bec6e0","on-primary":"#ffffff"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},spacing:{"gutter-desktop":"1.5rem","space-lg":"1.25rem","space-sm":"0.5rem","margin-desktop":"2rem","space-xl":"2rem","gutter":"1rem","space-md":"0.75rem","space-xs":"0.25rem","margin":"1rem"},fontFamily:{"headline-md":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"label-md":["Inter"],"body-sm":["Inter"],"body-md":["Inter"],"body-lg":["Inter"],"headline-xl-mobile":["Plus Jakarta Sans"],"metric-number":["Plus Jakarta Sans"],"code-sm":["JetBrains Mono"],"headline-xl":["Plus Jakarta Sans"],"label-sm":["Inter"],"headline-lg-mobile":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"title-md":["Inter"]},fontSize:{"headline-md":["20px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"600"}],"headline-sm":["16px",{lineHeight:"24px",fontWeight:"600"}],"label-md":["12px",{lineHeight:"16px",fontWeight:"500"}],"body-sm":["12px",{lineHeight:"16px",fontWeight:"400"}],"body-md":["14px",{lineHeight:"20px",fontWeight:"400"}],"body-lg":["16px",{lineHeight:"24px",fontWeight:"400"}],"headline-xl-mobile":["28px",{lineHeight:"36px",letterSpacing:"-0.01em",fontWeight:"700"}],"metric-number":["24px",{lineHeight:"32px",letterSpacing:"-0.02em",fontWeight:"700"}],"code-sm":["12px",{lineHeight:"16px",fontWeight:"500"}],"headline-xl":["36px",{lineHeight:"44px",letterSpacing:"-0.02em",fontWeight:"700"}],"label-sm":["11px",{lineHeight:"14px",letterSpacing:"0.02em",fontWeight:"600"}],"headline-lg-mobile":["22px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"600"}],"headline-lg":["28px",{lineHeight:"36px",letterSpacing:"-0.02em",fontWeight:"600"}],"title-md":["14px",{lineHeight:"20px",fontWeight:"600"}]}}}}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between select-none"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm bg-surface-container-lowest"><img alt="EvoSchedule Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Up81JlLRmvpV73uGQrAPTQYq7D_NPS1M7i5F3wx43uD6NtZoIYilCdtQcIMS_3bDtWzk2QS7SOd48NFLjbhe9cOuJZOQq2cGqouDcf7GrIJfT223oSEnFdTo1G86_A0dY_jjZ0K-nRPAdrHpTJkrl7-vHZMSoTUL1ns8q5SUCJy2RFdgV6Kh_InSKOEWMWYSZntwmhV4sAve3mwkij34-bvPMAvp5_lUs3zmdztSTTFgZa45cG6W7-D_Zr"><div class="flex flex-col min-w-0"><span class="font-headline-sm text-headline-sm text-primary tracking-tight truncate leading-tight">EvoSchedule</span><span class="font-label-sm text-label-sm text-secondary truncate tracking-normal">GA Academic Optimizer</span></div></div><div class="px-space-md pt-space-sm pb-space-xs"><span class="font-label-sm text-label-sm text-outline uppercase tracking-wider px-space-xs">Core Architecture</span></div><nav class="flex-1 px-space-sm space-y-space-xs overflow-y-auto" data-active-classes="bg-primary-container text-on-primary font-title-md shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 rounded transition-colors bg-primary-container text-on-primary font-title-md shadow-sm" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-title-md text-title-md">Overview</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="generator" href="#"><span class="material-symbols-outlined text-[18px]">auto_mode</span><span class="font-title-md text-title-md">Timetable Generator</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="timetable" href="#"><span class="material-symbols-outlined text-[18px]">calendar_view_week</span><span class="font-title-md text-title-md">Weekly Timetable</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="editor" href="#"><span class="material-symbols-outlined text-[18px]">edit_calendar</span><span class="font-title-md text-title-md">Timetable Editor</span></a><div class="pt-space-sm pb-space-xs"><span class="font-label-sm text-label-sm text-outline uppercase tracking-wider px-space-xs">Evolutionary Engine</span></div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="ga-design" href="#"><span class="material-symbols-outlined text-[18px]">schema</span><span class="font-title-md text-title-md">GA Design</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="visualizer" href="#"><span class="material-symbols-outlined text-[18px]">insights</span><span class="font-title-md text-title-md">Algorithm Visualizer</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="comparison" href="#"><span class="material-symbols-outlined text-[18px]">balance</span><span class="font-title-md text-title-md">Analysis &amp; Comparison</span></a><div class="pt-space-sm pb-space-xs"><span class="font-label-sm text-label-sm text-outline uppercase tracking-wider px-space-xs">Academic Catalog</span></div><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="academic-data" href="#"><span class="material-symbols-outlined text-[18px]">groups</span><span class="font-title-md text-title-md">Subjects &amp; Faculty</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="saved" href="#"><span class="material-symbols-outlined text-[18px]">folder_special</span><span class="font-title-md text-title-md">Saved Timetables</span></a></nav></div><div class="p-space-md bg-surface-container-low m-space-sm rounded"><div class="flex items-center justify-between"><span class="font-label-sm text-label-sm text-secondary uppercase">GA Engine Status</span><span class="inline-flex items-center gap-1 font-code-sm text-code-sm text-primary font-semibold"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> v3.4 Feasible</span></div><div class="mt-space-xs flex justify-between font-label-sm text-label-sm text-on-surface-variant"><span>Max Generations</span><span class="font-code-sm text-code-sm text-on-surface font-semibold">1,500</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-lg flex items-center justify-between select-none"><div class="flex items-center gap-space-md min-w-0"><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-1.5 rounded cursor-pointer hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-secondary text-[16px]">school</span><span class="font-label-md text-label-md text-on-surface font-medium truncate max-w-[210px]">AY 2024–2025 • Sem I (Commerce)</span><span class="material-symbols-outlined text-secondary text-[16px]">expand_more</span></div><div class="hidden xl:flex items-center gap-space-xs bg-surface-container-low px-space-md py-1.5 rounded cursor-pointer hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-primary text-[16px]">grid_on</span><span class="font-label-md text-label-md text-on-surface font-medium truncate max-w-[260px]">B.Com Div A — Schedule v4.2 [GA-Optimized]</span><span class="material-symbols-outlined text-secondary text-[16px]">unfold_more</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container-low text-on-surface font-label-md"><span class="material-symbols-outlined text-secondary text-[18px]">account_circle</span><span class="font-semibold">Sir/Madam</span></div></div></header><main class="w-full pt-16 bg-surface min-h-[calc(100vh-4rem)]"><div class="flex flex-col w-full">
+<div class="px-space-lg py-space-md space-y-space-lg max-w-[1720px] mx-auto w-full">
+<!-- Section 1: Executive Welcome & Algorithmic State Banner -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col xl:flex-row xl:items-center justify-between gap-space-lg relative overflow-hidden">
+<div class="absolute -right-20 -top-24 w-80 h-80 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none"></div>
+<div class="flex flex-col gap-space-xs relative z-10 min-w-0">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container-high text-primary font-label-sm text-label-sm font-semibold tracking-wide uppercase">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            Operational Cluster Alpha
+          </span>
+<span class="text-secondary font-label-sm text-label-sm">•</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-normal">Academic Session 2024–25 (Faculty of Commerce &amp; Accountancy)</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight truncate">Welcome back, Sir/Madam</h1>
+<div class="flex items-center gap-2 mt-0.5">
+<div class="inline-flex items-center gap-1.5 px-space-sm py-1 rounded bg-surface-container-low text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span>Optimization completed: Solution converged at <strong class="font-code-sm text-on-surface font-semibold">Generation 420</strong> with <strong class="text-primary font-semibold">0 hard violations</strong></span>
+</div>
+<span class="hidden sm:inline font-code-sm text-code-sm text-secondary">Elapsed: 3.42s</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap shrink-0 relative z-10">
+<button class="inline-flex items-center justify-center gap-space-xs px-space-md py-2 h-9 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-headline-sm text-headline-sm text-[13px] transition-colors shadow-sm cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">file_download</span>
+<span>Export Active Schedule</span>
+</button>
+<button class="inline-flex items-center justify-center gap-space-xs px-space-md py-2 h-9 rounded bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-headline-sm text-[13px] shadow-sm hover:shadow transition-all active:scale-[0.98] cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span>Generate Timetable</span>
+</button>
+</div>
+</div>
+<!-- Section 2: Four-Column High-Density KPI Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative group">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Active Matrix Target</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm bg-surface-container-low text-primary px-2 py-0.5 rounded font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Live
+          </span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface tracking-tight font-bold truncate">B.Com Sem III (Div A)</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5 truncate">Created via evolutionary GA Run #142</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-secondary">Division Head</span>
+<span class="font-title-md text-title-md text-on-surface">Prof. K. Subramanian</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Scheduled Sessions</span>
+<span class="font-code-sm text-code-sm text-primary font-bold bg-primary-fixed/50 px-2 py-0.5 rounded">100% Placed</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-metric-number text-metric-number text-on-surface font-extrabold tracking-tight">35</span>
+<span class="font-headline-sm text-headline-sm text-secondary">/ 35 slots</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">5 Teaching Days • 7 Periods/Day</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-secondary">Unassigned Load</span>
+<span class="font-code-sm text-code-sm font-semibold text-primary">0 Unassigned</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Hard Violations</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded font-bold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Validated
+          </span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-metric-number text-metric-number text-primary font-extrabold tracking-tight">0</span>
+<span class="font-body-sm text-body-sm text-secondary">conflicts detected</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5 truncate">Zero overlap across faculty, room, and cohorts</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between font-code-sm text-code-sm">
+<span class="text-secondary text-[11px]">R:0 • F:0 • G:0</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">100% Feasible</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider font-semibold">Fitness Function Score</span>
+<span class="font-label-sm text-label-sm text-primary font-bold bg-primary-fixed/60 px-2 py-0.5 rounded flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +4.2%
+          </span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="font-metric-number text-metric-number text-on-surface font-extrabold tracking-tight">98.6</span>
+<span class="font-headline-sm text-headline-sm text-secondary">/ 100</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Penalties: -1.4 soft preferences</p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-secondary">Soft Preference Rank</span>
+<span class="font-code-sm text-code-sm text-on-surface font-semibold">Top 1.2%</span>
+</div>
+</div>
+</div>
+<!-- Section 3: Dual Column Tactical Core -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN (8 Columns) -->
+<div class="xl:col-span-8 space-y-space-lg min-w-0">
+<!-- Module A: Weekly Timetable Interactive Mini-Preview -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between flex-wrap gap-space-sm mb-space-md">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Weekly Timetable Matrix Preview</h2>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-surface-container-low text-secondary rounded">Div A (Morning Shift)</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Showing Mon–Fri active configuration (Periods 1 to 5 of 7)</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<a class="inline-flex items-center gap-1 font-title-md text-title-md text-primary hover:text-primary-container px-space-sm py-1.5 rounded transition-colors font-semibold" data-path="timetable" href="#">
+<span>Open Full Interactive Grid</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Schedule Grid Container -->
+<div class="overflow-x-auto pb-space-xs">
+<table class="w-full min-w-[700px] border-collapse text-left">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase">
+<th class="py-2.5 px-3 rounded-l font-semibold w-24">Time / Day</th>
+<th class="py-2.5 px-3 font-semibold text-center">Mon</th>
+<th class="py-2.5 px-3 font-semibold text-center">Tue</th>
+<th class="py-2.5 px-3 font-semibold text-center">Wed</th>
+<th class="py-2.5 px-3 font-semibold text-center">Thu</th>
+<th class="py-2.5 px-3 rounded-r font-semibold text-center">Fri</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container text-body-sm font-body-sm">
+<!-- Period 1 -->
+<tr>
+<td class="py-3 px-3 font-code-sm text-code-sm text-secondary bg-surface-container-lowest">
+<span class="font-bold text-on-surface block">P-1</span>
+<span class="text-[11px] text-secondary">08:30–09:20</span>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3525cd]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Accountancy-I</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.AR</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#4f46e5]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Business Law</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-104</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">ADV.MS</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3130c0]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Financial Acc.</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.SN</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#565e74]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Secretarial Pr.</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">CR-201</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.VK</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3525cd]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Accountancy-I</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.AR</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- Period 2 -->
+<tr>
+<td class="py-3 px-3 font-code-sm text-code-sm text-secondary bg-surface-container-lowest">
+<span class="font-bold text-on-surface block">P-2</span>
+<span class="text-[11px] text-secondary">09:25–10:15</span>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#5c647a]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Book Keeping</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-105</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.PD</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3525cd]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Accountancy-I</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.AR</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#4f46e5]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Business Law</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-104</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">ADV.MS</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3130c0]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Cost Accounting</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-101</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.RS</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#5c647a]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Book Keeping</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-105</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.PD</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- Period 3 -->
+<tr>
+<td class="py-3 px-3 font-code-sm text-code-sm text-secondary bg-surface-container-lowest">
+<span class="font-bold text-on-surface block">P-3</span>
+<span class="text-[11px] text-secondary">10:20–11:10</span>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3130c0]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Financial Acc.</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.SN</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#565e74]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Auditing</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">CR-204</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">CA.NV</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#5c647a]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Book Keeping</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-105</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.PD</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#4f46e5]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Business Law</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-104</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">ADV.MS</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3130c0]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Cost Accounting</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-101</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.RS</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- Recess Row -->
+<tr class="bg-surface-container-low/50">
+<td class="py-1 px-3 font-code-sm text-code-sm text-outline uppercase font-semibold">Recess</td>
+<td class="py-1 px-3 text-center font-label-sm text-label-sm text-secondary tracking-wider uppercase font-medium" colspan="5">
+                    Campus Interval • Refreshment &amp; Transition (11:10–11:40)
+                  </td>
+</tr>
+<!-- Period 4 -->
+<tr>
+<td class="py-3 px-3 font-code-sm text-code-sm text-secondary bg-surface-container-lowest">
+<span class="font-bold text-on-surface block">P-4</span>
+<span class="text-[11px] text-secondary">11:40–12:30</span>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#565e74]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Secretarial Pr.</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">CR-201</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.VK</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3130c0]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Financial Acc.</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.SN</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3525cd]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Accountancy-I</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.AR</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#565e74]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Auditing</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">CR-204</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">CA.NV</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#4f46e5]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Business Law</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-104</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">ADV.MS</span>
+</div>
+</div>
+</td>
+</tr>
+<!-- Period 5 -->
+<tr>
+<td class="py-3 px-3 font-code-sm text-code-sm text-secondary bg-surface-container-lowest">
+<span class="font-bold text-on-surface block">P-5</span>
+<span class="text-[11px] text-secondary">12:35–01:25</span>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#5c647a]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Book Keeping</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-105</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">PROF.PD</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#565e74]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Secretarial Pr.</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">CR-201</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.VK</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3130c0]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Cost Accounting</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-101</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.RS</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#3525cd]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Accountancy-I</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">LH-102</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">DR.AR</span>
+</div>
+</div>
+</td>
+<td class="p-1.5">
+<div class="bg-surface-container-low hover:bg-surface-container p-2 rounded transition-all cursor-pointer group shadow-[inset_3px_0_0_0_#565e74]">
+<div class="font-title-md text-title-md text-on-surface font-semibold truncate group-hover:text-primary">Auditing</div>
+<div class="flex items-center justify-between text-secondary font-label-sm text-label-sm mt-1">
+<span class="font-code-sm text-code-sm">CR-204</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high font-medium text-on-surface">CA.NV</span>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between flex-wrap gap-space-sm text-secondary font-label-sm text-label-sm">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-primary"></span> Core Commerce</span>
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-primary-container"></span> Corporate Law</span>
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-secondary"></span> Allied Labs</span>
+</div>
+<span class="font-code-sm text-code-sm text-outline">Showing 25 of 35 Slots</span>
+</div>
+</div>
+<!-- Module B: GA Fitness Improvement & Convergence Chart -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between flex-wrap gap-space-sm mb-space-md">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">GA Convergence &amp; Fitness Trajectory</h2>
+<span class="font-code-sm text-code-sm px-2 py-0.5 bg-surface-container-low text-primary font-semibold rounded">Run #142 (420 Gens)</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mt-0.5">Tracking elite fitness chromosome progression vs population mean</p>
+</div>
+<div class="flex items-center gap-space-md font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5 font-medium text-on-surface">
+<span class="w-3 h-1 bg-primary rounded-full"></span> Best Fitness (Elite)
+              </span>
+<span class="flex items-center gap-1.5 font-medium text-secondary">
+<span class="w-3 h-1 bg-outline-variant rounded-full"></span> Population Mean
+              </span>
+</div>
+</div>
+<!-- SVG Chart -->
+<div class="relative w-full h-64 bg-surface-container-low/40 rounded-xl p-space-md flex flex-col justify-end">
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 680 200">
+<!-- Gridlines -->
+<line stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="680" y1="20" y2="20"></line>
+<line stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="680" y1="65" y2="65"></line>
+<line stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="680" y1="110" y2="110"></line>
+<line stroke="#E2E8F0" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="680" y1="155" y2="155"></line>
+<line stroke="#CBD5E1" stroke-width="1" x1="0" x2="680" y1="195" y2="195"></line>
+<!-- Fill Area under Best Fitness -->
+<path d="M 0 165 C 60 145, 120 70, 200 48 C 280 32, 420 25, 540 22 L 540 195 L 0 195 Z" fill="url(#primaryGradient)" opacity="0.12"></path>
+<!-- Population Mean Path -->
+<path d="M 0 185 C 80 170, 160 130, 240 105 C 320 85, 420 75, 540 68" fill="none" stroke="#A0AEC0" stroke-dasharray="4 4" stroke-width="2"></path>
+<!-- Best Fitness Path -->
+<path d="M 0 165 C 60 145, 120 70, 200 48 C 280 32, 420 25, 540 22" fill="none" stroke="#3525cd" stroke-linecap="round" stroke-width="3"></path>
+<!-- Milestone Markers -->
+<!-- Gen 0 -->
+<circle cx="0" cy="165" fill="#3525cd" r="4"></circle>
+<!-- Gen 150 -->
+<circle cx="200" cy="48" fill="#3525cd" r="4"></circle>
+<!-- Gen 420 Convergence Point -->
+<circle cx="540" cy="22" fill="#3525cd" r="6" stroke="#FFFFFF" stroke-width="2"></circle>
+<!-- Gradients Definition -->
+<defs>
+<linearGradient id="primaryGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#3525cd"></stop>
+<stop offset="100%" stop-color="#3525cd" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+</svg>
+<!-- Tooltip Overlay at Gen 420 (Pinned) -->
+<div class="absolute right-16 top-6 bg-surface-container-lowest p-2.5 rounded-lg shadow-md border-0 pointer-events-none">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-secondary">Convergence Point</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold mt-0.5">98.6% Fitness</div>
+<div class="font-code-sm text-code-sm text-secondary text-[11px] mt-0.5">Gen 420 • 0 Violations</div>
+</div>
+<!-- X Axis Marks -->
+<div class="flex items-center justify-between text-secondary font-code-sm text-code-sm text-[11px] pt-2">
+<span>Gen 0 (45.2%)</span>
+<span>Gen 75 (72.4%)</span>
+<span>Gen 150 (88.0%)</span>
+<span>Gen 300 (96.4%)</span>
+<span class="font-bold text-primary">Gen 420 (98.6%)</span>
+</div>
+</div>
+<div class="mt-space-md grid grid-cols-3 gap-space-sm bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary">Crossover Operator</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Uniform Order-Based (0.85)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary">Mutation Rate</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Adaptive Swap (0.04)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary">Selection Mechanism</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Tournament (k = 5)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (4 Columns) -->
+<div class="xl:col-span-4 space-y-space-lg min-w-0">
+<!-- Module C: Subject Session Distribution -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Curriculum Load Breakdown</h2>
+<span class="font-code-sm text-code-sm text-secondary">35 hrs/wk</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mb-space-md">Weekly lecture hours allocated across academic departments</p>
+<!-- Distribution Stacked Representation -->
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden flex mb-space-md">
+<div class="h-full bg-primary" style="width: 22.8%;" title="Accountancy: 8 hrs"></div>
+<div class="h-full bg-primary-container" style="width: 20%;" title="Book Keeping: 7 hrs"></div>
+<div class="h-full bg-tertiary" style="width: 17.1%;" title="Business Law: 6 hrs"></div>
+<div class="h-full bg-secondary" style="width: 14.3%;" title="Secretarial Pr.: 5 hrs"></div>
+<div class="h-full bg-secondary-container" style="width: 14.3%;" title="Cost Accounting: 5 hrs"></div>
+<div class="h-full bg-surface-dim" style="width: 11.5%;" title="Auditing: 4 hrs"></div>
+</div>
+<!-- Subject Breakdown List -->
+<div class="space-y-space-xs font-body-sm text-body-sm">
+<div class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="font-medium text-on-surface">Accountancy-I</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">8 hrs</span>
+<span class="font-label-sm text-label-sm text-secondary">(22.8%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-medium text-on-surface">Book Keeping</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">7 hrs</span>
+<span class="font-label-sm text-label-sm text-secondary">(20.0%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="font-medium text-on-surface">Business Law</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">6 hrs</span>
+<span class="font-label-sm text-label-sm text-secondary">(17.1%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-medium text-on-surface">Secretarial Practice</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">5 hrs</span>
+<span class="font-label-sm text-label-sm text-secondary">(14.3%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+<span class="font-medium text-on-surface">Cost Accounting</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">5 hrs</span>
+<span class="font-label-sm text-label-sm text-secondary">(14.3%)</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-surface-dim"></span>
+<span class="font-medium text-on-surface">Auditing &amp; Assurance</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">4 hrs</span>
+<span class="font-label-sm text-label-sm text-secondary">(11.5%)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Module D: Recent Timetable Versions List -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Recent Schedule Versions</h2>
+<a class="font-label-sm text-label-sm text-primary hover:underline font-semibold" data-path="saved" href="#">View Archive</a>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mb-space-md">Comparing genetic convergence runs and manual adjustments</p>
+<div class="space-y-space-sm">
+<!-- Version 1 (Active) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1 transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-bold text-primary">v4.2</span>
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-1.5 py-0.2 rounded font-semibold">Active GA</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">12m ago</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface mt-1">
+<span>Fitness: <strong class="font-code-sm text-code-sm text-primary">98.6%</strong></span>
+<span class="text-primary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span> 0 Violations
+                </span>
+</div>
+</div>
+<!-- Version 2 (Manual Draft) -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest hover:bg-surface-container-low/70 flex flex-col gap-1 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-bold text-on-surface">v4.1</span>
+<span class="font-label-sm text-label-sm bg-surface-container-high text-secondary px-1.5 py-0.2 rounded font-medium">Manual Draft</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">2h ago</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface mt-1">
+<span>Fitness: <strong class="font-code-sm text-code-sm text-secondary">86.4%</strong></span>
+<span class="text-error font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">warning</span> 3 Hard Clashes
+                </span>
+</div>
+</div>
+<!-- Version 3 (Previous GA Run) -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest hover:bg-surface-container-low/70 flex flex-col gap-1 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm font-bold text-on-surface">v3.9</span>
+<span class="font-label-sm text-label-sm bg-surface-container-high text-secondary px-1.5 py-0.2 rounded font-medium">GA Run #138</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Yesterday</span>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface mt-1">
+<span>Fitness: <strong class="font-code-sm text-code-sm text-secondary">95.1%</strong></span>
+<span class="text-primary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">check</span> 0 Violations
+                </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Module E: Constraint Health Checklist -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Constraint Health Audit</h2>
+<span class="material-symbols-outlined text-primary text-[20px]">health_and_safety</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary mb-space-md">Real-time verification against university senate regulations</p>
+<div class="space-y-space-sm font-body-sm text-body-sm">
+<div class="p-space-sm bg-surface-container-low/50 rounded flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">domain_verification</span>
+<span class="font-medium text-on-surface">Classroom Capacity</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary px-2 py-0.5 rounded bg-surface-container-high">
+                100% Compliant
+              </span>
+</div>
+<div class="p-space-sm bg-surface-container-low/50 rounded flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">schedule</span>
+<span class="font-medium text-on-surface">Faculty Daily Max (≤4)</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary px-2 py-0.5 rounded bg-surface-container-high">
+                Passed (Max 3.8)
+              </span>
+</div>
+<div class="p-space-sm bg-surface-container-low/50 rounded flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">more_time</span>
+<span class="font-medium text-on-surface">Consecutive Lecture Cap (≤2)</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary px-2 py-0.5 rounded bg-surface-container-high">
+                Passed (No breaks)
+              </span>
+</div>
+<div class="p-space-sm bg-surface-container-low/50 rounded flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">meeting_room</span>
+<span class="font-medium text-on-surface">Lab Block Double Slots</span>
+</div>
+<span class="font-label-sm text-label-sm font-semibold text-primary px-2 py-0.5 rounded bg-surface-container-high">
+                Synchronized
+              </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main></div>
+
+</body></html>
